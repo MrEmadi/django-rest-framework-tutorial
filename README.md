@@ -59,12 +59,12 @@ py manage.py startapp snippets
 # snippets: app name
 ```
 We'll need to **add our new `snippets` app** and the `rest_framework` app to `INSTALLED_APPS`. 
-Let's **edit the `tutorial/settings.py` file** (**See `my code`**).
+Let's **edit the `tutorial/settings.py` file** (**[codes](https://github.com/MrEmadi/django-rest-framework-tutorial/commit/216a7127aef8cf07f80ce494492e9a4745759487#diff-050a23520aa24d9e65854375089f1a01bfec8034d7ee08c99908f181f15d9905)**).
 
 # Creating a model to work with
 
 For the purposes of this tutorial we're going to start by **creating a simple `Snippet` model** that is used to store code snippets. 
-Go ahead and **edit the `snippets/models.py` file** (**See `my code`**).
+Go ahead and **edit the `snippets/models.py` file** (**[codes](https://github.com/MrEmadi/django-rest-framework-tutorial/commit/10d7720f2603e0a128313d6c353b93c3b3acfedb#diff-f0f7ef9b28e5a8b154f81c098a64de0c40e7017ece5d6b071f62842e25271c0c)**).
 
 We'll also need **to create an initial migration** for our snippet model, and **sync the database** for the first time.
 ```shell
@@ -78,7 +78,7 @@ py manage.py migrate snippets
 
 The first thing we need to get started on our Web API is to provide a way of **serializing and deserializing the snippet instances** into representations such as **json**. 
 We can do this by declaring serializers that work very similar to Django's forms. 
-**Create a file in the snippets directory named `serializers.py`** and add the codes (**See `my code`**).
+**Create a file in the snippets directory named `serializers.py`** and add the codes ([**codes**](https://github.com/MrEmadi/django-rest-framework-tutorial/commit/a300942b65b946cb14608b73f2c8390cc2c404af#diff-5c7b30f359b4fbd824cb0b4654a642b0ce23724f6e91c6b7d8e14f1c52148096)).
 
 The first part of the `serializer` class defines the fields that **get serialized/deserialized**. 
 The `create()` and `update()` methods define how fully fledged instances are created or modified when calling `serializer.save()`
