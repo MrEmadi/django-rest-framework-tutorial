@@ -90,3 +90,58 @@ The `{'base_template': 'textarea.html'}` flag is equivalent to using `widget=wid
 This is particularly useful for controlling **how the browsable API should be displayed**, as we'll see later in the tutorial.
 
 We can actually also save ourselves some time by using the `ModelSerializer` class, as we'll see later, but for now we'll keep our serializer definition explicit.
+
+# Working with Serializers
+
+Before we go any further we'll familiarize ourselves with using our new Serializer class. Let's drop into the Django shell.
+```shell
+py manage.py shell
+```
+Okay, once we've got a few imports out of the way, let's create a couple of code snippets to work with.
+```text
+>>> from snippets.models import Snippet
+>>> from snippets.serializers import SnippetSerializer
+>>> from rest_framework.renderers import JSONRenderer
+>>> from rest_framework.parsers import JSONParser
+>>> snippet = Snippet(code='foo = "bar"\n')
+>>> snippet.save()
+>>> snippet = Snippet(code='print("hello, world")\n')
+>>> snippet.save()                                    
+>>> serializer = SnippetSerializer(snippet)
+>>> serializer.data
+{'id': 2, 'title': '', 'code': 'print("hello, world")\n', 'linenos': False, 'language': 'python', 'style': 'friendly'}
+```
+At this point we've translated the model instance into Python native datatypes. 
+To finalize the serialization process we render the data into **`json`**.
+```text
+>>> content = JSONRenderer().render(serializer.data)
+>>> content
+b'{"id":2,"title":"","code":"print(\\"hello, world\\")\\n","linenos":false,"language":"python","style":"friendly"}'
+```
+**Deserialization** is similar. First we parse a stream into Python native datatypes, 
+then we restore those native datatypes into a fully populated object instance.
+```text
+>>> import io
+>>> stream = io.BytesIO(content)
+>>> data = JSONParser().parse(stream)
+>>> serializer = SnippetSerializer(data=data)
+>>> serializer.is_valid()
+True
+>>> serializer.validated_data
+{'title': '', 'code': 'print("hello, world")', 'linenos': False, 'language': 'python', 'style': 'friendly'}
+>>> serializer.save()
+<Snippet: Snippet object (3)>
+```
+Notice how similar the API is to working with forms. 
+The similarity should become even more apparent when we start writing views that use our serializer.
+
+We can also serialize query sets instead of model instances. 
+To do so we simply add a `many=True` flag to the serializer arguments.
+```text
+>>> serializer = SnippetSerializer(Snippet.objects.all(), many=True)
+>>> serializer.data
+[{'id': 1, 'title': '', 'code': 'foo = "bar"\n', 'linenos': False, 'language': 'pytho
+n', 'style': 'friendly'}, {'id': 2, 'title': '', 'code': 'print("hello, world")\n', '
+linenos': False, 'language': 'python', 'style': 'friendly'}, {'id': 3, 'title': '', '
+code': 'print("hello, world")', 'linenos': False, 'language': 'python', 'style': 'friendly'}]
+```
