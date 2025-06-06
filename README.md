@@ -154,7 +154,7 @@ It would be nice if we could keep our code a bit more concise.
 In the same way that Django provides both `Form` classes and `ModelForm` classes, REST framework includes both `Serializer` classes, and `ModelSerializer` classes.
 
 Let's look at refactoring our `serializer` using the `ModelSerializer` class. 
-Open the file `snippets/serializers.py` again, and replace the `SnippetSerializer` class with the code (**[codes](#todo)**).
+Open the file `snippets/serializers.py` again, and replace the `SnippetSerializer` class with the code (**[codes](https://github.com/MrEmadi/django-rest-framework-tutorial/commit/b1af180c81bda9c8ef1fd0bfcd97413b6c67bdf2#diff-5c7b30f359b4fbd824cb0b4654a642b0ce23724f6e91c6b7d8e14f1c52148096)**).
 
 One nice property that serializers have is that **you can inspect all the fields in a serializer instance**, by printing its representation. 
 Open the **Django shell with `py manage.py shell`**, then try the following:
