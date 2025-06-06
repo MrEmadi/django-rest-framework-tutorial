@@ -145,3 +145,34 @@ n', 'style': 'friendly'}, {'id': 2, 'title': '', 'code': 'print("hello, world")\
 linenos': False, 'language': 'python', 'style': 'friendly'}, {'id': 3, 'title': '', '
 code': 'print("hello, world")', 'linenos': False, 'language': 'python', 'style': 'friendly'}]
 ```
+
+# Using ModelSerializers
+
+Our `SnippetSerializer` class is replicating a lot of information that's also contained in the `Snippet` model. 
+It would be nice if we could keep our code a bit more concise.
+
+In the same way that Django provides both `Form` classes and `ModelForm` classes, REST framework includes both `Serializer` classes, and `ModelSerializer` classes.
+
+Let's look at refactoring our `serializer` using the `ModelSerializer` class. 
+Open the file `snippets/serializers.py` again, and replace the `SnippetSerializer` class with the code (**[codes](#todo)**).
+
+One nice property that serializers have is that **you can inspect all the fields in a serializer instance**, by printing its representation. 
+Open the **Django shell with `py manage.py shell`**, then try the following:
+```text
+>>> from snippets.serializers import SnippetSerializer
+>>> serializer = SnippetSerializer()
+>>> print(repr(serializer))
+SnippetSerializer():
+    id = IntegerField(label='ID', read_only=True)
+    title = CharField(allow_blank=True, max_length=100, required=False)
+    code = CharField(style={'base_template': 'textarea.html'})
+    linenos = BooleanField(required=False)
+    language = ChoiceField(choices=[('abap', 'ABAP'), ('abnf', 'ABNF'), ('actionscrip
+t', 'ActionScript'), ('actionscript3', 'ActionScript 3'), ('ada', 'Ada'), ('adl', 'AD
+L'), ('agda', 'Agda'), ...], required=False)
+    style = ChoiceField(choices=[('abap', 'abap'), ('algol', 'algol'), ('algol_nu', '
+algol_nu'), ('arduino', 'arduino'), ...], required=False)
+```
+It's important to remember that `ModelSerializer` classes don't do anything particularly magical, they are simply **a shortcut for creating `serializer` classes**:
+- An automatically determined set of fields.
+- Simple default implementations for the `create()` and `update()` methods.
