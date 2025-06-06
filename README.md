@@ -59,4 +59,17 @@ py manage.py startapp snippets
 # snippets: app name
 ```
 We'll need to **add our new `snippets` app** and the `rest_framework` app to `INSTALLED_APPS`. 
-Let's **edit the `tutorial/settings.py` file** (**my code**).
+Let's **edit the `tutorial/settings.py` file** (**See `my code`**).
+
+# Creating a model to work with
+
+For the purposes of this tutorial we're going to start by **creating a simple `Snippet` model** that is used to store code snippets. 
+Go ahead and **edit the `snippets/models.py` file** (**See `my code`**).
+
+We'll also need **to create an initial migration** for our snippet model, and **sync the database** for the first time.
+```shell
+py manage.py makemigrations snippets
+```
+```shell
+py manage.py migrate snippets
+```
