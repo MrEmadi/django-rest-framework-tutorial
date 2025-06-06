@@ -34,6 +34,11 @@ pip install pygments
  
 # We'll be using this for the code highlighting
 ```
+```shell
+# Check the installation of packages in the env:
+
+pip freeze
+```
 Note: **To exit the virtual environment** at any time, just type **`deactivate`**.
 
 # Getting started
@@ -47,3 +52,11 @@ django-admin startproject tutorial
 ```shell
 cd tutorial
 ```
+Once that's done we can create an app that we'll use **to create a simple Web API**.
+```shell
+py manage.py startapp snippets
+
+# snippets: app name
+```
+We'll need to **add our new `snippets` app** and the `rest_framework` app to `INSTALLED_APPS`. 
+Let's **edit the `tutorial/settings.py` file** (**my code**).
