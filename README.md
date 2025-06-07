@@ -176,3 +176,22 @@ algol_nu'), ('arduino', 'arduino'), ...], required=False)
 It's important to remember that `ModelSerializer` classes don't do anything particularly magical, they are simply **a shortcut for creating `serializer` classes**:
 - An automatically determined set of fields.
 - Simple default implementations for the `create()` and `update()` methods.
+
+# Writing regular Django views using our Serializer
+
+Let's see how we can write some API views using our new `Serializer` class. 
+For the moment we won't use any of REST framework's other features, we'll just write the views as regular Django views.
+
+Edit the `snippets/views.py` file, and add the code. 
+The root of our API is going to be a view that supports listing all the existing snippets, or creating a new snippet.
+Note that because we want to be able to POST to this view from clients that won't have a CSRF token we need to mark the view as `csrf_exempt`. 
+This isn't something that you'd normally want to do, and REST framework views actually use more sensible behavior than this, but it'll do for our purposes right now.
+We'll also need a view which corresponds to an individual snippet, and can be used to retrieve, update or delete the snippet (**[codes](#todo)**).
+
+Finally, we need to wire these views up. Create the `snippets/urls.py` file (**[codes](#todo)**).
+
+We also need to wire up the root urlconf, in the `tutorial/urls.py` file, to include our snippet app's URLs (**[codes](#todo)**).
+
+It's worth noting that there are a couple of edge cases we're not dealing with properly at the moment. 
+If we send malformed `json`, or if a request is made with a method that the view doesn't handle, then **we'll end up with a `500 server error` response**. 
+Still, this'll do for now.
