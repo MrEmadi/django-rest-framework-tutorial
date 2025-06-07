@@ -231,55 +231,84 @@ http GET http://127.0.0.1:8000/snippets/ --unsorted
 #X-Content-Type-Options: nosniff
 #Referrer-Policy: same-origin
 #Cross-Origin-Opener-Policy: same-origin
-#
-#[
-#    {
-#        "id": 1,
-#        "title": "",
-#        "code": "foo = \"bar\"\n",
-#        "linenos": false,
-#        "language": "python",
-#        "style": "friendly"                                                          
-#    },
-#    {
-#        "id": 2,
-#        "title": "",
-#        "code": "print(\"hello, world\")\n",
-#        "linenos": false,
-#        "language": "python",
-#        "style": "friendly"                                                          
-#    },
-#    {
-#        "id": 3,
-#        "title": "",
-#        "code": "print(\"hello, world\")",
-#        "linenos": false,
-#        "language": "python",
-#        "style": "friendly"                                                          
-#    }
-#]
+# 
+# [
+#     {
+#         "id": 1,
+#         "title": "",
+#         "code": "foo = \"bar\"\n",
+#         "linenos": false,
+#         "language": "python",
+#         "style": "friendly"                                                          
+#     },
+#     {
+#         "id": 2,
+#         "title": "",
+#         "code": "print(\"hello, world\")\n",
+#         "linenos": false,
+#         "language": "python",
+#         "style": "friendly"                                                          
+#     },
+#     {
+#         "id": 3,
+#         "title": "",
+#         "code": "print(\"hello, world\")",
+#         "linenos": false,
+#         "language": "python",
+#         "style": "friendly"                                                          
+#     }
+# ]
 ```
 Or we can get a particular snippet by referencing its `id`:
 ```shell
 http GET http://127.0.0.1:8000/snippets/2/ --unsorted
 
-#HTTP/1.1 200 OK
-#Date: Sat, 07 Jun 2025 09:33:57 GMT
-#Server: WSGIServer/0.2 CPython/3.13.3
-#Content-Type: application/json
-#X-Frame-Options: DENY
-#Content-Length: 120
-#X-Content-Type-Options: nosniff
-#Referrer-Policy: same-origin
-#Cross-Origin-Opener-Policy: same-origin
-#
-#{
-#    "id": 2,
-#    "title": "",
-#    "code": "print(\"hello, world\")\n",
-#    "linenos": false,
-#    "language": "python",
-#    "style": "friendly"                                                              
-#}
+# HTTP/1.1 200 OK
+# Date: Sat, 07 Jun 2025 09:33:57 GMT
+# Server: WSGIServer/0.2 CPython/3.13.3
+# Content-Type: application/json
+# X-Frame-Options: DENY
+# Content-Length: 120
+# X-Content-Type-Options: nosniff
+# Referrer-Policy: same-origin
+# Cross-Origin-Opener-Policy: same-origin
+# 
+# {
+#     "id": 2,
+#     "title": "",
+#     "code": "print(\"hello, world\")\n",
+#     "linenos": false,
+#     "language": "python",
+#     "style": "friendly"                                                              
+# }
 ```
 Similarly, you can have the same JSON displayed by visiting these URLs in a web browser.
+
+# Request and Response objects
+
+**REST framework** introduces a `Request` object that extends the regular `HttpRequest`,
+and provides more flexible request parsing. 
+The core functionality of the `Request` object is the `request.data` attribute,
+which is similar to `request.POST`, but more useful for working with Web APIs.
+- **`request.POST`**: Only handles form data.
+  Only works for `POST` method.
+- **`request.data`**: Handles arbitrary data.
+  Works for `POST`, `PUT` and `PATCH` methods.
+
+**REST framework** also introduces a `Response` object, which is a type of `TemplateResponse` that takes unrendered content and uses content negotiation to determine the correct content type to return to the client.
+- **`return Response(data)`**: Renders to content type as requested by the client.
+
+Using numeric HTTP status codes in your views doesn't always make for obvious reading,
+and it's easy to not notice if you get an error code wrong.
+**REST framework** provides more explicit identifiers for each status code,
+such as `HTTP_400_BAD_REQUEST` in the `status` module.
+It's a good idea to use these throughout rather than using numeric identifiers.
+
+**REST framework** provides two wrappers you can use to write API views.
+- The `@api_view` decorator for working with function-based views.
+- The `APIView` class for working with class-based views.
+These wrappers provide a few bits of functionality such as making sure you receive `Request` instances in your view,
+  and adding context to `Response` objects so that content negotiation can be performed.
+
+The wrappers also provide behavior such as returning `405 Method Not Allowed` responses when appropriate,
+and handling any `ParseError` exceptions that occur when accessing `request.data` with malformed input.
