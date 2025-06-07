@@ -325,4 +325,5 @@ This should all feel very familiar—it is not a lot different from working with
 Notice that we're no longer explicitly tying our requests or responses to a given content type.
 `request.data` can handle incoming `json` requests, but it can also handle other formats.
 Similarly, we're returning response objects with data,
-but allowing REST framework to render the response into the correct content type for us (**[codes](#todo)**).
+but allowing REST framework to render the response into the correct content type for us
+(**[codes](https://github.com/MrEmadi/django-rest-framework-tutorial/commit/d1a077f63e397314bc3bb2a57e66f7138aead1a4#diff-a4dc166130ff34f7334d219587a451162dbba6a006e8b1297d4e1c2b0c2f300c)**).
