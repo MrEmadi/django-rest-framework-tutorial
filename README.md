@@ -195,3 +195,91 @@ We also need to wire up the root urlconf, in the `tutorial/urls.py` file, to inc
 It's worth noting that there are a couple of edge cases we're not dealing with properly at the moment. 
 If we send malformed `json`, or if a request is made with a method that the view doesn't handle, then **we'll end up with a `500 server error` response**. 
 Still, this'll do for now.
+
+# Testing our first attempt at a Web API
+
+Now we can **start up a sample server that serves our snippets**. Quit out of the shell:
+```text
+>>> quit()
+```
+Start up Django's development server:
+```shell
+py manage.py runserver
+
+# Django version 5.2.2, using settings 'tutorial.settings'
+# Starting development server at http://127.0.0.1:8000/
+# Quit the server with CTRL-BREAK.
+```
+In another terminal window, we can test the server.
+We can test our API using `curl` or `httpie`. 
+`Httpie` is a user-friendly http client written in Python. 
+Let's install that.
+You can install `httpie` using `pip`:
+```shell
+pip install httpie
+```
+Finally, we can get a list of all the snippets:
+```shell
+http GET http://127.0.0.1:8000/snippets/ --unsorted
+
+#HTTP/1.1 200 OK
+#Date: Sat, 07 Jun 2025 09:31:08 GMT
+#Server: WSGIServer/0.2 CPython/3.13.3
+#Content-Type: application/json
+#X-Frame-Options: DENY
+#Content-Length: 354
+#X-Content-Type-Options: nosniff
+#Referrer-Policy: same-origin
+#Cross-Origin-Opener-Policy: same-origin
+#
+#[
+#    {
+#        "id": 1,
+#        "title": "",
+#        "code": "foo = \"bar\"\n",
+#        "linenos": false,
+#        "language": "python",
+#        "style": "friendly"                                                          
+#    },
+#    {
+#        "id": 2,
+#        "title": "",
+#        "code": "print(\"hello, world\")\n",
+#        "linenos": false,
+#        "language": "python",
+#        "style": "friendly"                                                          
+#    },
+#    {
+#        "id": 3,
+#        "title": "",
+#        "code": "print(\"hello, world\")",
+#        "linenos": false,
+#        "language": "python",
+#        "style": "friendly"                                                          
+#    }
+#]
+```
+Or we can get a particular snippet by referencing its `id`:
+```shell
+http GET http://127.0.0.1:8000/snippets/2/ --unsorted
+
+#HTTP/1.1 200 OK
+#Date: Sat, 07 Jun 2025 09:33:57 GMT
+#Server: WSGIServer/0.2 CPython/3.13.3
+#Content-Type: application/json
+#X-Frame-Options: DENY
+#Content-Length: 120
+#X-Content-Type-Options: nosniff
+#Referrer-Policy: same-origin
+#Cross-Origin-Opener-Policy: same-origin
+#
+#{
+#    "id": 2,
+#    "title": "",
+#    "code": "print(\"hello, world\")\n",
+#    "linenos": false,
+#    "language": "python",
+#    "style": "friendly"                                                              
+#}
+```
+Similarly, you can have the same JSON displayed by visiting these URLs in a web browser.
