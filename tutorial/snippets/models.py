@@ -10,7 +10,7 @@ STYLE_CHOICES = sorted([(item, item) for item in get_all_styles()])
 
 # Create your models here.
 class Snippet(models.Model):
-    objects: models.Manager() = models.Manager() # Fix the 'objects' warning in PyCharm!
+    objects: models.Manager = models.Manager() # Fix the 'objects' warning in PyCharm!
     DoesNotExist: type[ObjectDoesNotExist] = ObjectDoesNotExist # Fix the 'DoesNotExist' warning in PyCharm!
     created = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=100, blank=True, default='')
