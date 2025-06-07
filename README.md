@@ -307,8 +307,22 @@ It's a good idea to use these throughout rather than using numeric identifiers.
 **REST framework** provides two wrappers you can use to write API views.
 - The `@api_view` decorator for working with function-based views.
 - The `APIView` class for working with class-based views.
+
 These wrappers provide a few bits of functionality such as making sure you receive `Request` instances in your view,
   and adding context to `Response` objects so that content negotiation can be performed.
 
 The wrappers also provide behavior such as returning `405 Method Not Allowed` responses when appropriate,
 and handling any `ParseError` exceptions that occur when accessing `request.data` with malformed input.
+
+# Pulling it all together
+
+Okay, let's go ahead and start using these new components to refactor our views slightly.
+Our instance view is an improvement over the previous example.
+It's a little more concise, and the code now feels very similar to if we were working with the Forms API.
+We're also using named status codes, which makes the response meanings more obvious.
+Here is the view for an individual snippet, in the `views.py` module.
+This should all feel very familiar—it is not a lot different from working with regular Django views.
+Notice that we're no longer explicitly tying our requests or responses to a given content type.
+`request.data` can handle incoming `json` requests, but it can also handle other formats.
+Similarly, we're returning response objects with data,
+but allowing REST framework to render the response into the correct content type for us (**[codes](#todo)**).
